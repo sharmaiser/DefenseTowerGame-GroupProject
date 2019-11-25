@@ -21,33 +21,60 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        Instance = this; //set instance to current script
     }
 
-    private void Update()
+    private void Update() 
     {
-        if (!gameOver && enemySpawningOver)
-        {
-            if(EnemyManager.Instance.Enemies.Count == 0)
+        if (!gameOver && enemySpawningOver) //check if game is over yet, but the enemies have all been spawned
+        {   
+            //Check if no enemies left, if so win game
+            if(EnemyManager.Instance.Enemies.Count == 0) //if no enemies player wins
             {
                 OnGameWin();
             }
         }
 
+        //when esc is pressed quit to the title screen
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             QuitToTitleScreen();
         }
     }
 
-    private void OnGameWin()
+    private void OnGameWin() //when the player wins play the win audioclip
     {
         AudioSource.PlayClipAtPoint(gameWinSound, Camera.main.transform.position);
         gameOver = true;
     }
 
-    public void QuitToTitleScreen()
+    public void QuitToTitleScreen() //return to title screen
     {
         SceneManager.LoadScene("TitleScreen");
+    }
+
+    public void OnEnemyEscape() //if the amount of enemies that have escaped surpasses the amount allowed, call OnGameLose
+    {
+        escapedEnemies++;
+
+        if (escapedEnemies == maxAllowedEscapedEnemies)
+        {
+            //too many enemies escaped, you lose the game
+            OnGameLose();
+        }
+    }
+
+    private void OnGameLose() //set gameOver to true, destroy a;; enemies that are still on the map and tell waveManager to stop spawning
+    {
+        gameOver = true;
+
+        AudioSource.PlayClipAtPoint(gameLoseSound, Camera.main.transform.position);
+        EnemyManager.Instance.DestroyAllEnemies();
+        WaveManager.Instance.StopSpawning();
+    }
+
+    public void RetryLevel() //reload the game scene
+    {
+        SceneManager.LoadScene("Game");
     }
 }
