@@ -41,6 +41,11 @@ public class Enemy : MonoBehaviour
 
     private int wayPointIndex = 0;
 
+    void Start()
+    {
+        EnemyManager.Instance.RegisterEnemy(this);
+    }
+
     void OnGotToLastWayPoint()
     {
         Die();
@@ -61,37 +66,36 @@ public class Enemy : MonoBehaviour
     {
         if (gameObject != null)
         {
-            Destroy(gameObject);
-        }
+            EnemyManager.Instance.UnRegister(this);
+            gameObject.AddComponent<AutoScaler>().scaleSpeed = -2;
+            enabled = false;
+            Destroy(gameObject, 0.3f);
+        } 
     }
 
     void Update()
-    {
-        //1  
+    { 
         if (wayPointIndex < WayPointManager.Instance.Paths[pathIndex].WayPoints.Count)
         {
             UpdateMovement();
         }
         else
-        {
-            // 2    
+        {   
             OnGotToLastWayPoint();
         }
     }
     private void UpdateMovement()
-    {
-        //3  
+    { 
         Vector3 targetPosition =
             WayPointManager.Instance.Paths[pathIndex]
             .WayPoints[wayPointIndex].position;
-        //4  
+         
         transform.position = Vector3.MoveTowards(
             transform.position, targetPosition,
             moveSpeed * Time.deltaTime);
 
-        //5  
         transform.localRotation = UtilityMethods.SmoothlyLook(transform, targetPosition);
-        //6   
+          
         if (Vector3.Distance(transform.position, targetPosition) < .1f)
         {
             wayPointIndex++;
