@@ -1,18 +1,82 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class WaveManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //1 
+    public static WaveManager Instance;
+    //2
+    public List<EnemyWave> enemyWaves = new List<EnemyWave>();
+    //3
+    private float elapsedTime = 0f;
+    //4 
+    private EnemyWave activeWave;
+    //5
+    private float spawnCounter = 0f;
+    //6
+    private List<EnemyWave> activatedWaves = new List<EnemyWave>();
 
-    // Update is called once per frame
+    //1 
+    void Awake()
+    {
+        Instance = this;
+    }
+    
+    //2 
     void Update()
     {
-        
+     elapsedTime += Time.deltaTime; 
+     SearchForWave();
+     UpdateActiveWave();
+    }
+
+    private void SearchForWave()
+    {
+        foreach (EnemyWave enemyWave in enemyWaves)
+        {
+            if (!activatedWaves.Contains(enemyWave)        && enemyWave.startSpawnTimeInSeconds <= elapsedTime)
+            {
+                activeWave = enemyWave;
+                activatedWaves.Add(enemyWave);
+                spawnCounter = 0f;
+                break;
+            }
+        }
+    }
+
+    private void UpdateActiveWave()
+    {
+        if (activeWave != null)
+        {
+            spawnCounter += Time.deltaTime;
+            if (spawnCounter >= activeWave.timeBetweenSpawnsInSeconds)
+            {
+                spawnCounter = 0f; 
+                if (activeWave.listOfEnemies.Count != 0)
+                {
+                    GameObject enemy = (GameObject)Instantiate(         activeWave.listOfEnemies[0], WayPointManager.Instance.         GetSpawnPosition(activeWave.pathIndex), Quaternion.identity);    
+                    enemy.GetComponent<Enemy>().pathIndex = activeWave.pathIndex; 
+                    activeWave.listOfEnemies.RemoveAt(0);
+                }
+                else
+                {
+                    activeWave = null; 
+                    if (activatedWaves.Count == enemyWaves.Count)
+                    {
+                        // All waves are over      
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void StopSpawning()
+    {
+        elapsedTime = 0; spawnCounter = 0;
+        activeWave = null;
+        activatedWaves.Clear();
+        enabled = false;
     }
 }
