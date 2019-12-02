@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
     {
         AudioSource.PlayClipAtPoint(gameWinSound, Camera.main.transform.position);
         gameOver = true;
+        UI.Manager.Instance.ShowinScreen();
+        UI.Manager.Instance.ShowLoseScreen();
     }
 
     public void QuitToTitleScreen() //return to title screen
