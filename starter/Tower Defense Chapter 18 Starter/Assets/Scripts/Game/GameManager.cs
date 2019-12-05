@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     public void OnEnemyEscape() //if the amount of enemies that have escaped surpasses the amount allowed, call OnGameLose
     {
         escapedEnemies++;
+        UIManager.Instance.ShowDamage();
 
         if (escapedEnemies == maxAllowedEscapedEnemies)
         {

@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     public Transform enemyHealthBars;
     public GameObject enemyHealthBarPrefab;
     public GameObject centerWindow;
+    public GameObject damageCanvas;
 
     void Awake()
     {
@@ -83,6 +84,21 @@ public class UIManager : MonoBehaviour
     {
         towerInfoWindow.GetComponent<TowerInfoWindow>().tower = tower; towerInfoWindow.SetActive(true);
         UtilityMethods.MoveUiElementToWorldPosition(towerInfoWindow.GetComponent<RectTransform>(), tower.transform.position);
+    }
+
+    public void ShowDamage()
+    {
+        StartCoroutine(DoDamageAnimation());
+    }
+    private IEnumerator DoDamageAnimation()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(.1f);
+            damageCanvas.SetActive(true);
+            yield return new WaitForSeconds(.1f);
+            damageCanvas.SetActive(false);
+        }
     }
 }
 
