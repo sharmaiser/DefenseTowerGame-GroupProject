@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     {
         escapedEnemies++;
         UIManager.Instance.ShowDamage();
-
+ 
         if (escapedEnemies == maxAllowedEscapedEnemies)
         {
             //too many enemies escaped, you lose the game
