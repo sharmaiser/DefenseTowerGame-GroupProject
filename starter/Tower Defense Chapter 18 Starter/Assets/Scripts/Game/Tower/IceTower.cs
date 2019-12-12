@@ -17,10 +17,11 @@ public class IceTower : Tower
             }
         }
     }
-
+    //2
     protected override void AttackEnemy()
     {
         base.AttackEnemy();
+        //3
         GameObject ice = (GameObject)Instantiate(icePrefab,
         towerPieceToAim.position, Quaternion.identity);
         ice.GetComponent<FollowingProjectile>().enemyToFollow = targetEnemy;
