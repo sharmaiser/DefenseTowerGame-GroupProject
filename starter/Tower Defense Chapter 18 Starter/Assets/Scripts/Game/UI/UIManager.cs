@@ -1,7 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+<<<<<<< HEAD
 using UnityEngine.UI;
+=======
+using Unity.UIElements;
+>>>>>>> 64ace17e7aba3eaff0b67a39432c144be3ce1de3
 
 public class UIManager : MonoBehaviour
 {
@@ -18,6 +22,7 @@ public class UIManager : MonoBehaviour
     public GameObject enemyHealthBarPrefab;
     public GameObject centerWindow;
     public GameObject damageCanvas;
+    public static float vrUiScaleDivider = 12;
 
     void Awake()
     {
@@ -33,19 +38,22 @@ public class UIManager : MonoBehaviour
 
     public void ShowAddTowerWindow(GameObject towerSlot)
     {
+        if (GameManager.Instance.gameOver)
+        {
+            return;
+        }
         addTowerWindow.SetActive(true); addTowerWindow.GetComponent<AddTowerWindow>().towerSlotToAddTowerTo = towerSlot;
+        UtilityMethods.MoveUiElementToWorldPosition(addTowerWindow.GetComponent<RectTransform>(), towerSlot.transform.position);
         UtilityMethods.MoveUiElementToWorldPosition(addTowerWindow.GetComponent<RectTransform>(), towerSlot.transform.position);
     }
 
     public void ShowWinScreen()
     {
-        blackBackground.SetActive(true);
         winGameWindow.SetActive(true);
     }
 
     public void ShowLoseScreen()
     {
-        blackBackground.SetActive(true);
         loseGameWindow.SetActive(true);
     }
 
@@ -82,7 +90,12 @@ public class UIManager : MonoBehaviour
 
     public void ShowTowerInfoWindow(Tower tower)
     {
+        if (GameManager.Instance.gameOver)
+        {
+            return;
+        }
         towerInfoWindow.GetComponent<TowerInfoWindow>().tower = tower; towerInfoWindow.SetActive(true);
+        UtilityMethods.MoveUiElementToWorldPosition(towerInfoWindow.GetComponent<RectTransform>(), tower.transform.position);
         UtilityMethods.MoveUiElementToWorldPosition(towerInfoWindow.GetComponent<RectTransform>(), tower.transform.position);
     }
 
