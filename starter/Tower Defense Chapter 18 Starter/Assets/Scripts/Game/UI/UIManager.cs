@@ -1,7 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+<<<<<<< HEAD
+using UnityEngine.UI;
+=======
 using Unity.UIElements;
+>>>>>>> 64ace17e7aba3eaff0b67a39432c144be3ce1de3
 
 public class UIManager : MonoBehaviour
 {

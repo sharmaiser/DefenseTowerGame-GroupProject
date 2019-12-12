@@ -116,7 +116,20 @@ public class Enemy : MonoBehaviour
         {   
             OnGotToLastWayPoint();
         }
+
+        //1
+        if (frozen)
+        {
+            //2
+            freezeTimer += Time.deltaTime;
+            //3
+            if (freezeTimer >= timeEnemyStaysFrozenInSeconds)
+            {
+                Defrost();
+            }
+        }
     }
+
     private void UpdateMovement()
     { 
         Vector3 targetPosition =

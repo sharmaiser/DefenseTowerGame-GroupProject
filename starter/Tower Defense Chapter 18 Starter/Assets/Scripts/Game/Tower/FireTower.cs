@@ -15,7 +15,9 @@ public class FireTower : Tower
 
         particles.transform.localScale *= aggroRadius / 10f;
 
-        foreach (Enemy enemy in EnemyManager.Instance.GetEnemiesInRange(
-            transform.position, aggroRadius));
+        foreach (Enemy enemy in EnemyManager.Instance.GetEnemiesInRange(transform.position, aggroRadius))
+        {
+            enemy.TakeDamage(attackPower);
+        }
     }
 }
